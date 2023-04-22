@@ -11,9 +11,11 @@ const Navbar = () => {
         <ul className="flex items-center gap-5">
           <li className="text-sm font-semibold">
             <NavLink
-              to=""
+              to="/"
               className={({isActive}) => (
-                isActive && 'bg-orange-700 p-2 text-white rounded'
+                isActive
+                ? 'bg-orange-700 p-2 text-white rounded'
+                : undefined
               )}
               end
             >

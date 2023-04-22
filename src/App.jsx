@@ -1,8 +1,11 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import EventsPage from './pages/EventsPage';
-import MainLayout from './pages/MainLayout';
+
 import { Provider } from 'react-redux';
 import { store } from './store/index';
+
+import MainLayout from './pages/MainLayout';
+import EventsPage from './pages/EventsPage';
+import EventPage from './pages/EventPage';
 
 const route = createBrowserRouter([
   {
@@ -10,6 +13,7 @@ const route = createBrowserRouter([
     element: <MainLayout />,
     children: [
       { index: true, element: <EventsPage /> },
+      { path: '/events/:eventId', element: <EventPage /> }
     ]
   }
 ])
