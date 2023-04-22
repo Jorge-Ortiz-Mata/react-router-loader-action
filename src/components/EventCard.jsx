@@ -8,7 +8,7 @@ const EventCard = ({event}) => {
       <span className="text-sm font-medium">{event.description}</span>
       <span className="text-sm font-medium">id: {event.id}</span>
       <Link
-        to={`events/${event.id}`}
+        to={`${event.id}`}
         className="border rounded-lg text-sm font-semibold p-2 mt-5 bg-sky-700 text-white"
       >
         See more

@@ -19,6 +19,20 @@ const Navbar = () => {
               )}
               end
             >
+              Home
+            </NavLink>
+          </li>
+
+          <li className="text-sm font-semibold">
+            <NavLink
+              to="events"
+              className={({isActive}) => (
+                isActive
+                ? 'bg-orange-700 p-2 text-white rounded'
+                : undefined
+              )}
+              end
+            >
               My events
             </NavLink>
           </li>
