@@ -2,15 +2,18 @@ import { useSelector, useDispatch } from "react-redux";
 import EventInput from "./EventInput";
 import EventSubmit from "./EventSubmit";
 import { eventsActions } from "../store/events-slice";
+import { useNavigate } from "react-router-dom";
 
 const EventForm = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const events = useSelector(state => state.events.events);
   const newEvent = useSelector(state => state.form);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(eventsActions.addEvents({...newEvent, id: (events.length + 1)}));
+    navigate('/events')
   }
 
   return(
