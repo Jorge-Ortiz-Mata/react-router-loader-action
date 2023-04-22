@@ -1,21 +1,25 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import EventsPage from './pages/EventsPage';
-import HomePage from './pages/HomePage';
 import MainLayout from './pages/MainLayout';
+import { Provider } from 'react-redux';
+import { store } from './store/index';
 
 const route = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
     children: [
-      { index: true, element: <HomePage /> },
-      { path: 'events', element: <EventsPage /> }
+      { index: true, element: <EventsPage /> },
     ]
   }
 ])
 
 function App() {
-  return <RouterProvider router={route} />
+  return(
+    <Provider store={store}>
+      <RouterProvider router={route} />
+    </Provider>
+  )
 }
 
 export default App;
