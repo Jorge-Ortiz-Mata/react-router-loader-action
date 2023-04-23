@@ -4,7 +4,8 @@ import { Provider } from 'react-redux';
 import { store } from './store/index';
 
 import HomePage from './pages/HomePage';
-import EventsPage from './pages/EventsPage';
+import ErrorPage from './pages/ErrorPage';
+import EventsPage, { getDummyData } from './pages/EventsPage';
 import EventPage from './pages/EventPage';
 
 import MainLayout from './pages/MainLayout';
@@ -15,13 +16,17 @@ const route = createBrowserRouter([
   {
     path: '/',
     element: <MainLayout />,
+    errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
       {
         path: 'events',
         element: <EventLayout />,
         children: [
-          { index: true, element: <EventsPage /> },
+          { index: true,
+            element: <EventsPage />,
+            loader: getDummyData
+          },
           { path: ':eventId', element: <EventPage /> },
           { path: 'new', element: <EventNew /> }
         ]

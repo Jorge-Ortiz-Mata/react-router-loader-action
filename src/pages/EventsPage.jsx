@@ -1,6 +1,9 @@
+import { useLoaderData } from "react-router-dom";
 import EventList from "../components/EventList";
 
 const EventsPage = () => {
+  const response = useLoaderData();
+  console.log(response);
 
   return(
     <section className="flex flex-col w-full items-center justify-center py-10">
@@ -11,3 +14,12 @@ const EventsPage = () => {
 }
 
 export default EventsPage;
+
+export const getDummyData = () => {
+  // const person = { name: 'Jorge', country: 'México' };
+  // return person;
+  throw new Response(
+    JSON.stringify({ message: 'Events failed' }),
+    { status: 500 }
+  );
+}

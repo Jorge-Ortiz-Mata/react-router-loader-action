@@ -1,70 +1,120 @@
-# Getting Started with Create React App
+# React - Events
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Index
 
-## Available Scripts
+- [React Routes - Loader](#react-routes---loader)
 
-In the project directory, you can run:
+## React Routes - Loader.
 
-### `npm start`
+We can use the loader() method to execute a block of code before render the compnent.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+* App.jsx
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+```js
+import EventsPage, { getDummyData } from './pages/EventsPage';
+....
+{
+  path: 'events',
+  element: <EventLayout />,
+  children: [
+    { index: true,
+      element: <EventsPage />,
+      loader: getDummyData
+    },
+    { path: ':eventId', element: <EventPage /> },
+    { path: 'new', element: <EventNew /> }
+  ]
+},
+```
 
-### `npm test`
+* EventsPage.jsx
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+```js
+import { useLoaderData } from "react-router-dom";
 
-### `npm run build`
+export default const EventsPage = () => {
+  const response = useLoaderData();
+  console.log(response);
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+  return(
+    <section className="flex flex-col w-full items-center justify-center py-10">
+      <h2 className="font-bold text-3xl mb-10">My events.</h2>
+    </section>
+  );
+}
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+export const getDummyData = () => {
+  return { name: 'Jorge', country: 'México' };
+}
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+We could also call the useLoaderData in child components and not from parent components.
 
-### `npm run eject`
+## useNavigation - Status for requesting data.
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+We can use the useNavigation hook to show a message while we are getting a http response.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```js
+import { Outlet, useNavigation } from "react-router-dom"
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+const MainLayout = () => {
+  const navigation = useNavigation();
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+  return(
+    <>
+      { navigation.state === 'loading' && <h1 className="font-bold text-3xl text-center">Loading...</h1> }
+      { navigation.state === 'idle' && <h1 className="font-bold text-3xl text-center">Idle...</h1> }
+      { navigation.state === 'submitting' && <h1 className="font-bold text-3xl text-center">Submitting...</h1> }
+    </>
+  )
+}
 
-## Learn More
+export default MainLayout;
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Throwing errors with loader().
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+We can throw an error if a request failed.
 
-### Code Splitting
+* EventsPage.jsx
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+```js
+export const getDummyData = () => {
+  throw new Response(
+    JSON.stringify({ message: 'Events failed' }),
+    { status: 500 }
+  );
+}
+```
 
-### Analyzing the Bundle Size
+* ErrorPage.jsx
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+```js
+import { useRouteError } from "react-router-dom";
 
-### Making a Progressive Web App
+const ErrorPage = () => {
+  const error = useRouteError();
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+  console.log(error);
 
-### Advanced Configuration
+  return(
+    <>
+      <h1 className="text-center font-bold text-2xl">An error ocurred.</h1>
+      <p className="text-center font-semibold">{JSON.parse(error.data).message}</p>
+    </>
+  )
+}
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+export default ErrorPage;
+```
 
-### Deployment
+* App.jsx
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+```js
+{
+  path: '/',
+  element: <MainLayout />,
+  errorElement: <ErrorPage />,
+  children: [...]
+}
+```
