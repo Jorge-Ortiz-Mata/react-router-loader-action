@@ -237,3 +237,47 @@ import EventNew, { action as EventNewAction } from './pages/EventNew';
   action: EventNewAction
 },
 ```
+
+## Activate the action() method using other elements
+
+We can activate action methods with other methods using the useSubmit Hook from React Router.
+
+* EventPage.jsx
+
+```js
+import { Link, useRouteLoaderData, useSubmit } from "react-router-dom";
+
+const EventPage = () => {
+  const submit = useSubmit();
+
+  const handleDeleteEvent = () => {
+    const proceed = window.confirm('Are you sure you want to delete this article');
+
+    if(proceed){
+      submit(null, { method: 'delete' })
+    }
+  }
+
+  return(
+    <button className="p-2 text-white bg-red-600 rounded font-semibold" onClick={handleDeleteEvent}>
+      Delete event
+    </button>
+  )
+}
+
+export default EventPage;
+
+export async function action({params}){
+  const eventId = params.eventId;
+  console.log('Deleting... ' + eventId);
+  return eventId;
+}
+```
+
+* App.jsx
+
+```js
+import EventPage, { action as actionEventPage } from './pages/EventPage';
+...
+{ index: true, element: <EventPage />, action: actionEventPage },
+```

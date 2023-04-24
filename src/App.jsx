@@ -6,7 +6,7 @@ import { store } from './store/index';
 import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import EventsPage, { getDummyData } from './pages/EventsPage';
-import EventPage, { loader as loaderEventPage } from './pages/EventPage';
+import EventPage, { loader as loaderEventPage, action as actionEventPage } from './pages/EventPage';
 import EventEditPage from './pages/EventEditPage';
 
 import MainLayout from './pages/MainLayout';
@@ -39,7 +39,7 @@ const route = createBrowserRouter([
             id: 'event-id-detail',
             loader: loaderEventPage,
             children: [
-              { index: true, element: <EventPage /> },
+              { index: true, element: <EventPage />, action: actionEventPage },
               { path: 'edit', element: <EventEditPage /> }
             ]
           },
