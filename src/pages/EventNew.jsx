@@ -19,6 +19,10 @@ export const action = async ({request, params}) => {
     description: data.get('description'),
   }
 
-  console.log(eventData);
-  return eventData;
+  // if(response.status === 422){
+    return {errors: ['One Error', 'Two Errors'], status: 400}
+  // }
+
+  // console.log(eventData);
+  // return eventData;
 }

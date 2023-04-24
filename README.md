@@ -281,3 +281,53 @@ import EventPage, { action as actionEventPage } from './pages/EventPage';
 ...
 { index: true, element: <EventPage />, action: actionEventPage },
 ```
+
+## Access to data from the action() method.
+
+We can receive the errors from the Backend and to access them, we can do this:
+
+```ruby
+render json: { errors: @user.errors }, status: :unprocessable_entity
+```
+
+* NewEvent.jsx.
+
+```js
+export const action = async ({request, params}) => {
+  const response = axios.post('/users', {...});
+
+  if(response.status === 422){
+    return response;
+  }
+
+  return redirect('/users');
+}
+```
+
+* FormEvent.jsx.
+
+```js
+import { useActionData } from "react-router-dom";
+
+const EventForm = ({event}) => {
+  const data = useActionData();
+
+  return(
+    <Form
+      method="post"
+      className="flex flex-col gap-2 items-center border shadow p-5 rounded-xl"
+    >
+      {
+        data?.status && <div>
+          There were errors. Sorry.
+          <span>Status: {data.status}</span>
+        </div>
+      }
+    </Form>
+  )
+}
+
+export default EventForm;
+```
+
+We can access to the action params with useActionData Hook.
