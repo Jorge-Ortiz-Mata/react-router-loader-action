@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { formActions } from "../store/form-slice";
 
-const EventInput = ({name, label}) => {
+const EventInput = ({name, label, defaultValue}) => {
   const dispatch = useDispatch();
 
   const handleChange = (e) => {
@@ -25,6 +25,7 @@ const EventInput = ({name, label}) => {
         name={name}
         onChange={handleChange}
         className="text-sm border rounded p-2"
+        defaultValue={defaultValue}
       />
     </div>
   )

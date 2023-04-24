@@ -4,7 +4,7 @@ import EventSubmit from "./EventSubmit";
 import { eventsActions } from "../store/events-slice";
 import { useNavigate } from "react-router-dom";
 
-const EventForm = () => {
+const EventForm = ({event}) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const events = useSelector(state => state.events.events);
@@ -21,8 +21,8 @@ const EventForm = () => {
       onSubmit={handleSubmit}
       className="flex flex-col gap-2 items-center border shadow p-5 rounded-xl"
     >
-      <EventInput name='name' label='Name' />
-      <EventInput name='description' label='Description' />
+      <EventInput name='name' label='Name' defaultValue={event?.name} />
+      <EventInput name='description' label='Description' defaultValue={event?.description} />
       <EventSubmit label='Create event' />
     </form>
   )

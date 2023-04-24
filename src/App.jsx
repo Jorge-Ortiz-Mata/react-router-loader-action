@@ -7,6 +7,7 @@ import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import EventsPage, { getDummyData } from './pages/EventsPage';
 import EventPage, { loader as loaderEventPage } from './pages/EventPage';
+import EventEditPage from './pages/EventEditPage';
 
 import MainLayout from './pages/MainLayout';
 import EventLayout from './pages/EventLayout';
@@ -28,8 +29,19 @@ const route = createBrowserRouter([
             element: <EventsPage />,
             loader: getDummyData
           },
-          { path: ':eventId', element: <EventPage />, loader: loaderEventPage },
-          { path: 'new', element: <EventNew /> }
+          {
+            path: 'new',
+            element: <EventNew />
+          },
+          {
+            path: ':eventId',
+            id: 'event-id-detail',
+            loader: loaderEventPage,
+            children: [
+              { index: true, element: <EventPage /> },
+              { path: 'edit', element: <EventEditPage /> }
+            ]
+          },
         ]
       },
     ]

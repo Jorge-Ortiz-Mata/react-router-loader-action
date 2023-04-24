@@ -1,4 +1,4 @@
-import { useLoaderData, json } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import EventList from "../components/EventList";
 
 const EventsPage = () => {
@@ -18,11 +18,4 @@ export default EventsPage;
 export const getDummyData = () => {
   const person = { name: 'Jorge', country: 'México' };
   return person;
-  // throw new Response(
-  //   JSON.stringify({ message: 'Events failed' }),
-  //   { status: 500 }
-  // );
-  // return json({message: 'Events failed - Bad request'}, {
-  //   status: 500
-  // });
 }
