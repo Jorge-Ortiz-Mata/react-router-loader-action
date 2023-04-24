@@ -118,3 +118,25 @@ export default ErrorPage;
   children: [...]
 }
 ```
+
+## Passing params with loader.
+
+We can get the params using the loader function instead of using the URL directly.
+
+* EventPage.jsx
+
+```js
+export async function loader({request, params}) {
+  return params.eventId;
+}
+```
+
+* App.jsx
+
+```js
+import EventPage, { loader as loaderEventPage } from './pages/EventPage';
+
+...
+
+{ path: ':eventId', element: <EventPage />, loader: loaderEventPage },
+```
