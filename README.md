@@ -140,3 +140,46 @@ import EventPage, { loader as loaderEventPage } from './pages/EventPage';
 
 { path: ':eventId', element: <EventPage />, loader: loaderEventPage },
 ```
+
+## Reusing a loader among routes.
+
+We can reuse a loader method between several routes as well.
+
+* App.jsx
+
+```js
+import EventPage, { loader as loaderEventPage } from './pages/EventPage';
+....
+
+{
+  path: ':eventId',
+  id: 'event-id-detail',
+  loader: loaderEventPage,
+  children: [
+    { index: true, element: <EventPage /> },
+    { path: 'edit', element: <EventEditPage /> }
+  ]
+},
+```
+
+* AnyRoute.jsx
+```js
+import { Link, useRouteLoaderData } from "react-router-dom";
+
+const EventPage = () => {
+  const eventId = useRouteLoaderData('event-id-detail');
+
+  return(
+    <section className="flex flex-col items-center m-10 border rounded shadow p-5 gap-3">
+    ...
+
+    </section>
+  )
+}
+
+export default EventPage;
+
+export async function loader({request, params}) {
+  return params.eventId;
+}
+```
