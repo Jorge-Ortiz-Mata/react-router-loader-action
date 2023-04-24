@@ -221,6 +221,7 @@ export const action = async ({request, params}) => {
   }
 
   console.log(eventData);
+  redirect('/events');
   return eventData;
 }
 ```
