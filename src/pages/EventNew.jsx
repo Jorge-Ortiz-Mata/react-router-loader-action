@@ -11,3 +11,14 @@ const EventNew = () => {
 }
 
 export default EventNew;
+
+export const action = async ({request, params}) => {
+  const data = await request.formData();
+  const eventData = {
+    title: data.get('name'),
+    description: data.get('description'),
+  }
+
+  console.log(eventData);
+  return eventData;
+}

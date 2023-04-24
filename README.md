@@ -183,3 +183,56 @@ export async function loader({request, params}) {
   return params.eventId;
 }
 ```
+
+## The action() method.
+
+We can activate an action after we click on the submit button in a Form.
+
+* Form.jsx
+
+```js
+import { Form, useNavigate } from "react-router-dom";
+
+const EventForm = ({event}) => {
+
+  return(
+    <Form
+      method="post"
+      className="flex flex-col gap-2 items-center border shadow p-5 rounded-xl"
+    >
+      <EventInput name='name' label='Name' defaultValue={event?.name} />
+      <EventInput name='description' label='Description' defaultValue={event?.description} />
+      <EventSubmit label='Create event' />
+    </Form>
+  )
+}
+
+export default EventForm;
+```
+
+* EventNew.jsx
+
+```js
+export const action = async ({request, params}) => {
+  const data = await request.formData();
+  const eventData = {
+    title: data.get('name'),
+    description: data.get('description'),
+  }
+
+  console.log(eventData);
+  return eventData;
+}
+```
+
+* App.jsx
+
+```js
+import EventNew, { action as EventNewAction } from './pages/EventNew';
+...
+{
+  path: 'new',
+  element: <EventNew />,
+  action: EventNewAction
+},
+```

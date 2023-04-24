@@ -11,7 +11,7 @@ import EventEditPage from './pages/EventEditPage';
 
 import MainLayout from './pages/MainLayout';
 import EventLayout from './pages/EventLayout';
-import EventNew from './pages/EventNew';
+import EventNew, { action as EventNewAction } from './pages/EventNew';
 
 
 const route = createBrowserRouter([
@@ -31,7 +31,8 @@ const route = createBrowserRouter([
           },
           {
             path: 'new',
-            element: <EventNew />
+            element: <EventNew />,
+            action: EventNewAction
           },
           {
             path: ':eventId',
