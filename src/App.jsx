@@ -6,11 +6,12 @@ import { store } from './store/index';
 import HomePage from './pages/HomePage';
 import ErrorPage from './pages/ErrorPage';
 import EventsPage, { getDummyData } from './pages/EventsPage';
-import EventPage from './pages/EventPage';
+import EventPage, { loader as loaderEventPage } from './pages/EventPage';
 
 import MainLayout from './pages/MainLayout';
 import EventLayout from './pages/EventLayout';
 import EventNew from './pages/EventNew';
+
 
 const route = createBrowserRouter([
   {
@@ -27,7 +28,7 @@ const route = createBrowserRouter([
             element: <EventsPage />,
             loader: getDummyData
           },
-          { path: ':eventId', element: <EventPage /> },
+          { path: ':eventId', element: <EventPage />, loader: loaderEventPage },
           { path: 'new', element: <EventNew /> }
         ]
       },

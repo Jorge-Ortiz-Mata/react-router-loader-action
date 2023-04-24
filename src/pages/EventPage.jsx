@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 
 const EventPage = () => {
   const events = useSelector(state => state.events.events);
   const [event, setEvent] = useState(undefined);
-  const eventId = useParams().eventId;
+  const eventId =  useLoaderData();
 
   useEffect(() => {
     const eventFiltered = events.filter(obj => obj.id === parseInt(eventId));
@@ -22,3 +22,7 @@ const EventPage = () => {
 }
 
 export default EventPage;
+
+export async function loader({request, params}) {
+  return params.eventId;
+}
