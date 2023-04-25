@@ -416,8 +416,64 @@ async function loadData() {
 }
 
 export const getDummyData = () => {
-  defer({
+  return defer({
     people: loadData() // It must return a promise, that's the async keyboard.
+  })
+}
+```
+
+
+## Multiple defers
+
+We can declare multiple defers to render objects at the same time depending on the time.
+
+```jsx
+import { Suspense } from "react";
+import { useLoaderData, defer, Await } from "react-router-dom";
+
+const EventsPage = () => {
+  const data = useLoaderData();
+  console.log(data);
+
+  return(
+    <>
+      <Suspense fallback={<p>Loading People...</p>}>
+        <Await resolve={data.people}>
+          {(peopleLoaded) => {
+            <section className="flex flex-col w-full items-center justify-center py-10">
+              { peopleLoaded /*  Do your map or something like that  */ }
+            </section>
+          }}
+        </Await>
+      </Suspense>
+
+      <Suspense fallback={<p>Loading Cities...</p>}>
+        <Await resolve={data.cities}>
+          {(citiesLoaded) => {
+            <section className="flex flex-col w-full items-center justify-center py-10">
+              { citiesLoaded /*  Do your map or something like that  */ }
+            </section>
+          }}
+        </Await>
+      </Suspense>
+    </>
+  )
+}
+
+export default EventsPage;
+
+async function loadPeople() {
+  // Here goes the HTTP request....
+}
+
+async function loadCities() {
+  // Here goes the HTTP request....
+}
+
+export const getDummyData = () => {
+  return defer({
+    people: await loadData(), // With await, it sends the request and the page is render after getting the data.
+    cities: loadCities()
   })
 }
 ```
