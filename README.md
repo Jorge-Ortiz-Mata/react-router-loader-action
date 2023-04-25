@@ -381,3 +381,43 @@ export const action = async ({request, params}) => {
   return data.get('email');
 }
 ```
+
+## Show a conteny while the page is getting data.
+
+We can use the Await component from React Router to show a message while retrieving data.
+
+* HTTP request in Component.jsx
+
+```jsx
+import { Suspense } from "react";
+import { useLoaderData, defer, Await } from "react-router-dom";
+
+const EventsPage = () => {
+  const data = useLoaderData();
+  console.log(data);
+
+  return(
+    <Suspense fallback={<p>Loading...</p>}>
+      <Await resolve={data.people}>
+        {(peopleLoaded) => {
+          <section className="flex flex-col w-full items-center justify-center py-10">
+            { peopleLoaded /*  Do your map or something like that  */ }
+          </section>
+        }}
+      </Await>
+    </Suspense>
+  )
+}
+
+export default EventsPage;
+
+async function loadData() {
+  // Here goes the HTTP request....
+}
+
+export const getDummyData = () => {
+  defer({
+    people: loadData() // It must return a promise, that's the async keyboard.
+  })
+}
+```
