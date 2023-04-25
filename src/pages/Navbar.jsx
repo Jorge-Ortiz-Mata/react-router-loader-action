@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom"
+import NewsLetterForm from "../components/NewsLetterForm";
 
 const Navbar = () => {
 
@@ -36,7 +37,23 @@ const Navbar = () => {
               My events
             </NavLink>
           </li>
+
+          <li className="text-sm font-semibold">
+            <NavLink
+              to="newsletter"
+              className={({isActive}) => (
+                isActive
+                ? 'bg-orange-700 p-2 text-white rounded'
+                : undefined
+              )}
+              end
+            >
+              NewsLetter
+            </NavLink>
+          </li>
         </ul>
+
+        <NewsLetterForm />
       </nav>
     </header>
   );

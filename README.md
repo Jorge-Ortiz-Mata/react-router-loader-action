@@ -332,7 +332,6 @@ export default EventForm;
 
 We can access to the action params with useActionData Hook.
 
-
 ## Reusable action() method.
 
 If we have a form that shares the same elements, we can define the action in the Form.jsx component and set the method dynamically.
@@ -346,5 +345,39 @@ The method will be available through the request.method variable.
 
 export const action = async ({request, params}) => {
   const method = request.method;
+}
+```
+
+## useFetcher Hook.
+
+If we have 2 forms rendering at the same time and each one does something different, we can use the useFetcher Hook to point a specific action.
+
+```jsx
+import { useFetcher } from "react-router-dom"
+import EventInput from "./EventInput"
+import EventSubmit from "./EventSubmit"
+
+const NewsLetterForm = () => {
+  const fetcher = useFetcher();
+  const response = fetcher;
+
+  console.log('Fetcher response:');
+  console.log(response.state);
+  console.log(response.data);
+
+  return(
+    <fetcher.Form method="post" action="/newsletter">
+      <EventInput name='email' label='Email' />
+      <EventSubmit />
+    </fetcher.Form>
+  )
+}
+
+export default NewsLetterForm;
+
+export const action = async ({request, params}) => {
+  const data = await request.formData();
+  console.log(data.get('email'));
+  return data.get('email');
 }
 ```
